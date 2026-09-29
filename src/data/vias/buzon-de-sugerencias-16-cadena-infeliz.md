@@ -12,6 +12,5 @@ grade: "5to"
 gradeUncertain: false
 bolts: 3
 anchorPoints: 2
-protection: "3+2 (notación de la fuente)"
+protection: "3+2"
 ---
-

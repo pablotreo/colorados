@@ -12,7 +12,6 @@ grade: "8b+"
 gradeUncertain: false
 bolts: 12
 anchorPoints: 2
-protection: "12+2 (notación de la fuente)"
+protection: "12+2"
 restriction: "No escalar de septiembre a diciembre: nidificación de halcones peregrinos."
 ---
-

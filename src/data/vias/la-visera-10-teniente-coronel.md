@@ -12,9 +12,8 @@ grade: "6c"
 gradeUncertain: false
 bolts: 9
 anchorPoints: 2
-protection: "9+2 (notación de la fuente)"
+protection: "9+2"
 status: "Inconclusa"
 warning: "Falta la entrada y limpieza, según la fuente."
 restriction: "No escalar de septiembre a diciembre: nidificación de halcones peregrinos."
 ---
-
