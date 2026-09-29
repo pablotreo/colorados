@@ -1,0 +1,99 @@
+---
+const { topo, sectorName, minimal = false } = Astro.props;
+const dialogId = `croquis-${topo.id}`;
+---
+<article class="card overflow-hidden" data-topo-card>
+  <button
+    type="button"
+    class="focus-ring block w-full cursor-zoom-in rounded-2xl text-left"
+    data-open-topo
+    aria-controls={dialogId}
+    aria-haspopup="dialog"
+    aria-label={`Ampliar ${topo.data.name}`}
+  >
+    <div class="aspect-[4/3] overflow-hidden bg-stone-100">
+      <img
+        src={topo.data.image}
+        alt={topo.data.alt}
+        loading="lazy"
+        class="size-full object-contain"
+      />
+    </div>
+    {minimal ? (
+      <p class="px-2 py-2 text-xs font-black leading-tight tracking-tight text-basalt-900 [overflow-wrap:anywhere] sm:[overflow-wrap:normal]">{sectorName}</p>
+    ) : (
+      <div class="px-2 py-2 text-basalt-900">
+        <p class="text-[.58rem] font-bold uppercase tracking-widest opacity-55 [overflow-wrap:anywhere] sm:[overflow-wrap:normal]">{sectorName}</p>
+        <h3 class="text-base font-black leading-tight tracking-tight">{topo.data.name}</h3>
+      </div>
+    )}
+  </button>
+
+  <dialog
+    id={dialogId}
+    class="m-0 h-dvh max-h-none w-screen max-w-none bg-basalt-950 p-0 text-white backdrop:bg-black/90"
+    aria-labelledby={`${dialogId}-title`}
+    data-topo-dialog
+  >
+    <div class="flex h-full flex-col">
+      <header class="flex flex-wrap items-center justify-between gap-3 border-b border-white/15 bg-basalt-950 p-3">
+        <h2 id={`${dialogId}-title`} class="min-w-0 flex-1 truncate font-black">{topo.data.name}</h2>
+        <div class="flex items-center gap-2">
+          <button type="button" class="focus-ring size-11 rounded-lg bg-white/10 text-xl font-black hover:bg-white/20" data-zoom-out aria-label="Alejar croquis">−</button>
+          <output class="w-14 text-center text-sm font-bold" data-zoom-value>100%</output>
+          <button type="button" class="focus-ring size-11 rounded-lg bg-white/10 text-xl font-black hover:bg-white/20" data-zoom-in aria-label="Acercar croquis">+</button>
+          <button type="button" class="focus-ring h-11 rounded-lg bg-white px-4 text-sm font-black text-basalt-950 hover:bg-stone-100" data-close-topo>Cerrar</button>
+        </div>
+      </header>
+      <div class="min-h-0 flex-1 overflow-auto p-3 md:p-6" data-topo-viewport>
+        <img
+          src={topo.data.image}
+          alt={topo.data.alt}
+          loading="lazy"
+          class="mx-auto block h-auto max-w-none"
+          data-topo-image
+        />
+      </div>
+    </div>
+  </dialog>
+</article>
+
+<script>
+  const setupTopoLightboxes = () => {
+    document.querySelectorAll<HTMLDialogElement>('[data-topo-dialog]').forEach((dialog) => {
+      if (dialog.dataset.ready === 'true') return;
+      dialog.dataset.ready = 'true';
+
+      const card = dialog.closest<HTMLElement>('[data-topo-card]');
+      const opener = card?.querySelector<HTMLButtonElement>('[data-open-topo]');
+      const image = dialog.querySelector<HTMLImageElement>('[data-topo-image]');
+      const zoomValue = dialog.querySelector<HTMLOutputElement>('[data-zoom-value]');
+      const viewport = dialog.querySelector<HTMLElement>('[data-topo-viewport]');
+      let zoom = 100;
+
+      const setZoom = (value: number) => {
+        zoom = Math.min(300, Math.max(50, value));
+        if (image) image.style.width = `${zoom}%`;
+        if (zoomValue) zoomValue.value = `${zoom}%`;
+      };
+
+      opener?.addEventListener('click', () => {
+        setZoom(100);
+        dialog.showModal();
+      });
+      dialog.querySelector('[data-close-topo]')?.addEventListener('click', () => dialog.close());
+      dialog.querySelector('[data-zoom-in]')?.addEventListener('click', () => setZoom(zoom + 25));
+      dialog.querySelector('[data-zoom-out]')?.addEventListener('click', () => setZoom(zoom - 25));
+      image?.addEventListener('dblclick', () => setZoom(zoom === 100 ? 200 : 100));
+      viewport?.addEventListener('wheel', (event) => {
+        if (!event.ctrlKey && !event.metaKey) return;
+        event.preventDefault();
+        setZoom(zoom + (event.deltaY < 0 ? 25 : -25));
+      }, { passive: false });
+      dialog.addEventListener('close', () => opener?.focus());
+    });
+  };
+
+  document.addEventListener('astro:page-load', setupTopoLightboxes);
+  setupTopoLightboxes();
+</script>

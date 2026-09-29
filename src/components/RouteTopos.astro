@@ -1,0 +1,102 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  routeId: string;
+  routeName: string;
+  topos: CollectionEntry<'topos'>[];
+}
+
+const { routeId, routeName, topos } = Astro.props;
+const dialogId = `croquis-via-${routeId}`;
+---
+
+<div data-route-topos>
+  <button
+    type="button"
+    class="focus-ring mt-5 inline-flex min-h-11 cursor-zoom-in items-center gap-2 rounded-md border border-basalt-900/20 px-4 py-2 text-sm font-black text-basalt-900 transition hover:bg-basalt-900 hover:text-white"
+    data-open-route-topos
+    aria-controls={dialogId}
+    aria-haspopup="dialog"
+  >
+    Ver croquis{topos.length > 1 ? ` (${topos.length})` : ''}
+    <span aria-hidden="true">↗</span>
+  </button>
+
+  <dialog
+    id={dialogId}
+    class="m-0 h-dvh max-h-none w-screen max-w-none bg-basalt-950 p-0 text-white backdrop:bg-black/90"
+    aria-labelledby={`${dialogId}-title`}
+    data-route-topos-dialog
+  >
+    <div class="flex h-full flex-col">
+      <header class="flex flex-wrap items-center justify-between gap-3 border-b border-white/15 bg-basalt-950 p-3">
+        <h2 id={`${dialogId}-title`} class="min-w-0 flex-1 truncate font-black">{routeName}</h2>
+        <div class="flex items-center gap-2">
+          <button type="button" class="focus-ring size-11 rounded-md bg-white/10 text-xl font-black hover:bg-white/20" data-route-zoom-out aria-label="Alejar croquis">−</button>
+          <output class="w-14 text-center text-sm font-bold" data-route-zoom-value>100%</output>
+          <button type="button" class="focus-ring size-11 rounded-md bg-white/10 text-xl font-black hover:bg-white/20" data-route-zoom-in aria-label="Acercar croquis">+</button>
+          <button type="button" class="focus-ring h-11 rounded-md bg-white px-4 text-sm font-black text-basalt-950 hover:bg-stone-100" data-close-route-topos>Cerrar</button>
+        </div>
+      </header>
+      <div class="min-h-0 flex-1 overflow-auto p-3 md:p-6" data-route-topos-viewport>
+        <div class="mx-auto grid max-w-[1600px] gap-6">
+          {topos.map((topo, index) => (
+            <figure>
+              {topos.length > 1 && <figcaption class="mb-2 text-sm font-black">Croquis {index + 1} · {topo.data.name}</figcaption>}
+              <img
+                src={topo.data.image}
+                alt={topo.data.alt}
+                loading="lazy"
+                class="mx-auto block h-auto w-full max-w-none origin-top"
+                data-route-topo-image
+              />
+            </figure>
+          ))}
+        </div>
+      </div>
+    </div>
+  </dialog>
+</div>
+
+<script>
+  const setupRouteTopos = () => {
+    document.querySelectorAll<HTMLElement>('[data-route-topos]').forEach((container) => {
+      if (container.dataset.ready === 'true') return;
+      container.dataset.ready = 'true';
+
+      const opener = container.querySelector<HTMLButtonElement>('[data-open-route-topos]');
+      const dialog = container.querySelector<HTMLDialogElement>('[data-route-topos-dialog]');
+      const images = container.querySelectorAll<HTMLImageElement>('[data-route-topo-image]');
+      const zoomValue = container.querySelector<HTMLOutputElement>('[data-route-zoom-value]');
+      const viewport = container.querySelector<HTMLElement>('[data-route-topos-viewport]');
+      let zoom = 100;
+
+      if (!dialog) return;
+
+      const setZoom = (value: number) => {
+        zoom = Math.min(300, Math.max(50, value));
+        images.forEach((image) => { image.style.width = `${zoom}%`; });
+        if (zoomValue) zoomValue.value = `${zoom}%`;
+      };
+
+      opener?.addEventListener('click', () => {
+        setZoom(100);
+        dialog.showModal();
+      });
+      container.querySelector('[data-close-route-topos]')?.addEventListener('click', () => dialog.close());
+      container.querySelector('[data-route-zoom-in]')?.addEventListener('click', () => setZoom(zoom + 25));
+      container.querySelector('[data-route-zoom-out]')?.addEventListener('click', () => setZoom(zoom - 25));
+      images.forEach((image) => image.addEventListener('dblclick', () => setZoom(zoom === 100 ? 200 : 100)));
+      viewport?.addEventListener('wheel', (event) => {
+        if (!event.ctrlKey && !event.metaKey) return;
+        event.preventDefault();
+        setZoom(zoom + (event.deltaY < 0 ? 25 : -25));
+      }, { passive: false });
+      dialog.addEventListener('close', () => opener?.focus());
+    });
+  };
+
+  document.addEventListener('astro:page-load', setupRouteTopos);
+  setupRouteTopos();
+</script>

@@ -1,0 +1,27 @@
+{
+  "name": "colorados-climbing-guide",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "latest",
+    "@astrojs/mdx": "latest",
+    "@astrojs/sitemap": "latest",
+    "@tailwindcss/vite": "latest",
+    "@tabler/icons": "latest",
+    "astro": "latest",
+    "sharp": "latest",
+    "tailwind-merge": "latest",
+    "tailwind-variants": "latest",
+    "tailwindcss": "latest",
+    "tw-animate-css": "latest",
+    "typescript": "latest",
+    "vite-plugin-pwa": "latest"
+  }
+}

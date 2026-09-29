@@ -1,0 +1,31 @@
+<header class="absolute inset-x-0 top-0 z-40 text-white">
+  <nav class="container-guide flex h-20 items-center justify-between" aria-label="Navegación principal">
+    <a href="/" class="focus-ring flex items-center gap-3 rounded-md font-black tracking-tight">
+      <span class="grid size-9 place-items-center rounded-lg bg-clay-500 text-sm text-basalt-950"><img src="/icons/icon.svg" alt="" width="36" height="36" /></span>
+      <span>COLORADOS</span>
+    </a>
+
+    <div class="hidden items-center gap-7 text-sm font-bold md:flex">
+      <a href="/sectores/">Sectores</a>
+      <a href="/vias/">Vías</a>
+      <a href="/croquis/">Croquis</a>
+      <a href="/informacion/">Antes de escalar</a>
+      <a href="/contacto/">Contacto</a>
+    </div>
+
+    <details class="group relative md:hidden">
+      <summary class="focus-ring grid size-11 cursor-pointer list-none place-items-center rounded-md border border-white/30 text-xl [&::-webkit-details-marker]:hidden">
+        <span class="sr-only">Abrir menú</span>
+        <span aria-hidden="true" class="group-open:hidden">☰</span>
+        <span aria-hidden="true" class="hidden group-open:inline">×</span>
+      </summary>
+      <div class="absolute right-0 top-14 w-64 overflow-hidden rounded-xl border border-white/10 bg-basalt-950 p-3 text-white shadow-xl">
+        <a class="focus-ring block rounded-lg px-3 py-3 font-bold hover:bg-white/10" href="/sectores/">Sectores</a>
+        <a class="focus-ring block rounded-lg px-3 py-3 font-bold hover:bg-white/10" href="/vias/">Vías</a>
+        <a class="focus-ring block rounded-lg px-3 py-3 font-bold hover:bg-white/10" href="/croquis/">Croquis</a>
+        <a class="focus-ring block rounded-lg px-3 py-3 font-bold hover:bg-white/10" href="/informacion/">Antes de escalar</a>
+        <a class="focus-ring block rounded-lg px-3 py-3 font-bold hover:bg-white/10" href="/contacto/">Contacto</a>
+      </div>
+    </details>
+  </nav>
+</header>

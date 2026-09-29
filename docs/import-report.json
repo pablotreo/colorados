@@ -1,0 +1,18 @@
+{
+  "sectors": 7,
+  "declaredRoutes": 78,
+  "importedEntries": 78,
+  "counts": {
+    "buena-vista": 10,
+    "la-visera": 10,
+    "morro-del-alero": 15,
+    "buzon-de-sugerencias": 18,
+    "sabandijeada": 10,
+    "ojo-clinico": 10,
+    "triasico": 5
+  },
+  "notes": [
+    "La Visera declara 10 vías. La variante final se incorpora como nota de la vía 1; las dos entradas numeradas 10 se conservan.",
+    "La exportación HTML no conserva marcas naranjas de proyectos: no se infiere ese estado."
+  ]
+}

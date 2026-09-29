@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://colorados-guia-escalada.netlify.app/sitemap-index.xml

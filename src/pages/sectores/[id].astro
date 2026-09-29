@@ -1,0 +1,112 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import RouteCard from '@/components/RouteCard.astro';
+import TopoCard from '@/components/TopoCard.astro';
+
+export async function getStaticPaths() {
+  return (await getCollection('sectors')).map((sector) => ({
+    params: { id: sector.id },
+    props: { sector },
+  }));
+}
+
+const { sector } = Astro.props;
+const { Content } = await render(sector);
+const routes = (await getCollection('routes'))
+  .filter((route) => route.data.sector === sector.id)
+  .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+const allTopos = await getCollection('topos');
+const topos = allTopos
+  .filter((topo) => topo.data.sector === sector.id && !topo.data.routeCard)
+  .sort((a, b) => a.data.order - b.data.order);
+const routeTopos = allTopos.filter((topo) => topo.data.routeCard);
+const topoSectorName = sector.data.name;
+const description = sector.data.description ?? `Información y vías de ${sector.data.name}, sector de escalada de Los Colorados.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Place',
+  name: sector.data.name,
+  alternateName: sector.data.aliases,
+  description,
+  address: {
+    '@type': 'PostalAddress',
+    addressRegion: 'San Juan',
+    addressCountry: 'AR',
+  },
+};
+---
+<BaseLayout title={sector.data.name} description={description} schema={schema}>
+  <section class="bg-basalt-900 pb-14 pt-32 text-white">
+    <div class="container-guide">
+      <Breadcrumbs items={[{ label: 'Sectores', href: '/sectores/' }, { label: sector.data.name }]} />
+      <div class="mt-14">
+        <p class="eyebrow text-clay-500" style="font-size:1.4rem;line-height:1.2">Sector {sector.data.number} · Colorados</p>
+        <h1 class="display mt-3 text-6xl [overflow-wrap:anywhere] sm:[overflow-wrap:normal] md:text-8xl">{sector.data.name}</h1>
+        <p class="mt-5 max-w-2xl text-lg text-white/65">{sector.data.description ?? 'La información de esta aguja está en proceso de documentación.'}</p>
+
+        <dl class="mt-8 flex flex-wrap gap-2 text-sm font-bold" aria-label="Datos rápidos del sector">
+          <div class="rounded-md border border-white/15 bg-white/10 px-4 py-2">
+            <dt class="sr-only">Vías</dt><dd>{routes.length} {routes.length === 1 ? 'vía' : 'vías'}</dd>
+          </div>
+          <div class="rounded-md border border-white/15 bg-white/10 px-4 py-2">
+            <dt class="sr-only">Croquis</dt><dd>{topos.length} croquis</dd>
+          </div>
+          {sector.data.elevation && (
+            <div class="rounded-md border border-white/15 bg-white/10 px-4 py-2">
+              <dt class="sr-only">Altitud</dt><dd>{sector.data.elevation} m</dd>
+            </div>
+          )}
+          {sector.data.orientation && (
+            <div class="rounded-md border border-white/15 bg-white/10 px-4 py-2">
+              <dt class="sr-only">Orientación</dt><dd>{sector.data.orientation}</dd>
+            </div>
+          )}
+          {sector.data.approach && (
+            <div class="rounded-md border border-white/15 bg-white/10 px-4 py-2">
+              <dt class="sr-only">Aproximación</dt><dd>{sector.data.approach}</dd>
+            </div>
+          )}
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <div class="container-guide py-16">
+    <article class="prose-guide">
+      <Content />
+      {sector.data.restriction && <aside class="not-prose mt-8 rounded-xl border border-clay-600 bg-clay-500/15 p-5 text-sm font-bold leading-6">{sector.data.restriction}</aside>}
+      {sector.data.warning && <aside class="not-prose mt-8 rounded-xl border border-clay-600 bg-clay-500/15 p-5 text-sm font-bold leading-6">{sector.data.warning}</aside>}
+      {sector.data.countNote && <p class="not-prose mt-5 text-sm leading-6 opacity-70">{sector.data.countNote}</p>}
+
+      {topos.length > 0 && (
+        <section>
+          <h2>Croquis</h2>
+          <div class="not-prose grid gap-5">
+            {topos.map((topo) => (
+              <TopoCard topo={topo} sectorName={`Sector ${sector.data.number} · ${topoSectorName}`} minimal />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <h2>Vías del sector</h2>
+      {routes.length > 0 ? (
+        <div class="not-prose grid gap-4 sm:grid-cols-2">
+          {routes.map((route) => (
+            <RouteCard
+              route={route}
+              sectorNumber={sector.data.number}
+              topos={routeTopos.filter((topo) => topo.data.routes.includes(route.id))}
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="card p-6">
+          <p>Las vías de este sector se incorporarán cuando la información haya sido documentada y revisada.</p>
+        </div>
+      )}
+    </article>
+  </div>
+</BaseLayout>

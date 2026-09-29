@@ -1,0 +1,5 @@
+---
+interface Item { label:string; href?:string }
+const { items=[] } = Astro.props as { items:Item[] };
+---
+<nav aria-label="Migas de pan" class="text-sm opacity-70"><ol class="flex flex-wrap items-center gap-2"><li><a class="focus-ring rounded" href="/">Inicio</a></li>{items.map((item)=><li class="flex items-center gap-2"><span aria-hidden="true">/</span>{item.href?<a class="focus-ring rounded" href={item.href}>{item.label}</a>:<span aria-current="page">{item.label}</span>}</li>)}</ol></nav>

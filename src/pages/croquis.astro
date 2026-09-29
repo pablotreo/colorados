@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import TopoCard from '@/components/TopoCard.astro';
+
+const sectors = (await getCollection('sectors')).sort((a, b) => a.data.order - b.data.order);
+const topos = (await getCollection('topos')).filter((topo) => !topo.data.routeCard);
+const sectorCount = new Set(sectors.map((sector) => sector.data.number)).size;
+const generalTopos = topos.filter((topo) => !topo.data.sector).sort((a, b) => a.data.order - b.data.order);
+const groupedTopos = sectors
+  .map((sector) => ({
+    sector,
+    topos: topos
+      .filter((topo) => topo.data.sector === sector.id)
+      .sort((a, b) => a.data.order - b.data.order)
+  }))
+  .filter((group) => group.topos.length > 0);
+---
+<BaseLayout title="Croquis" description="Croquis, mapas de ubicación y accesos de los sectores de escalada de Colorados.">
+  <section class="bg-basalt-900 pb-14 pt-32 text-white">
+    <div class="container-guide">
+      <Breadcrumbs items={[{ label: 'Croquis' }]} />
+      <p class="eyebrow mt-14 text-clay-500">{topos.length} croquis cargados · {sectorCount} sectores numerados</p>
+      <h1 class="display mt-3 text-6xl md:text-8xl">Croquis</h1>
+      <p class="mt-5 max-w-2xl text-white/60">Topos de vías, mapas de ubicación, accesos y descensos preparados para consultar en la montaña.</p>
+    </div>
+  </section>
+  <section class="container-guide py-16">
+    {generalTopos.length > 0 && (
+      <section class="mb-16" aria-labelledby="croquis-generales">
+        <div class="mb-6">
+          <p class="eyebrow text-clay-500">Vista de conjunto</p>
+          <h2 id="croquis-generales" class="mt-2 text-4xl font-black tracking-tight">Ubicación general</h2>
+        </div>
+        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {generalTopos.map((topo) => <TopoCard topo={topo} sectorName="Colorados · Ubicación general" />)}
+        </div>
+      </section>
+    )}
+    {groupedTopos.length > 0 ? (
+      <div class="grid gap-16">
+        {groupedTopos.map(({ sector, topos }) => (
+          <section aria-labelledby={`sector-${sector.id}`}>
+            <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p class="eyebrow text-clay-500">Sector {sector.data.number} · {topos.length} {topos.length === 1 ? 'documento' : 'documentos'}</p>
+                <h2 id={`sector-${sector.id}`} class="mt-2 text-4xl font-black tracking-tight [overflow-wrap:anywhere] sm:[overflow-wrap:normal]">{sector.data.name}</h2>
+              </div>
+              <a class="focus-ring rounded-lg text-sm font-black underline underline-offset-4" href={`/sectores/${sector.id}/`}>Ver sector →</a>
+            </div>
+            <div class="grid gap-5 md:grid-cols-2">
+              {topos.map((topo) => <TopoCard topo={topo} sectorName={`Sector ${sector.data.number} · ${sector.data.name}`} minimal />)}
+            </div>
+          </section>
+        ))}
+      </div>
+    ) : generalTopos.length === 0 && (
+      <div class="card mx-auto max-w-2xl p-8 text-center">
+        <p class="eyebrow text-clay-500">En preparación</p>
+        <h2 class="mt-3 text-3xl font-black">Todavía no hay croquis publicados.</h2>
+        <p class="mt-4 leading-7 opacity-65">Los iremos incorporando con su autoría, fecha y estado de verificación a medida que sean documentados.</p>
+      </div>
+    )}
+  </section>
+</BaseLayout>

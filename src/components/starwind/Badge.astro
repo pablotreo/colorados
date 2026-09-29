@@ -1,0 +1,5 @@
+---
+const { tone='neutral' } = Astro.props;
+const tones = { neutral:'bg-black/7', accent:'bg-clay-500 text-basalt-950', good:'bg-emerald-700 text-white' };
+---
+<span class:list={["inline-flex items-center rounded-md px-2.5 py-1 text-[.68rem] font-extrabold uppercase tracking-wider", tones[tone as keyof typeof tones]]}><slot /></span>

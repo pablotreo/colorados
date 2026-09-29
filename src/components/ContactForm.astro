@@ -1,0 +1,87 @@
+---
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+<form name="contacto" method="POST" action="/contacto/gracias/" data-netlify="true" data-netlify-honeypot="bot-field" class:list={["card grid gap-6", compact ? "p-5 md:p-6" : "p-6 md:p-8"]} data-contact-form>
+  <input type="hidden" name="form-name" value="contacto" />
+  <input type="hidden" name="submission-id" value="" />
+  <p class="absolute size-px overflow-hidden [clip:rect(0_0_0_0)]" aria-hidden="true">
+    <label>No completar: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+  </p>
+  <div class:list={["grid gap-6", compact ? "md:grid-cols-2" : "sm:grid-cols-2"]}>
+    <label class="grid gap-2 text-sm font-bold">Nombre y apellido
+      <input required autocomplete="name" name="name" class="focus-ring h-12 rounded-xl border border-current/20 bg-transparent px-4 font-normal" />
+    </label>
+    <label class="grid gap-2 text-sm font-bold">Correo electrónico
+      <input required autocomplete="email" name="email" type="email" class="focus-ring h-12 rounded-xl border border-current/20 bg-transparent px-4 font-normal" />
+    </label>
+  </div>
+  <label class="grid gap-2 text-sm font-bold">Mensaje
+    <textarea required name="message" rows={compact ? 5 : 7} class="focus-ring resize-y rounded-xl border border-current/20 bg-transparent p-4 font-normal" placeholder="Cuéntanos tu aporte, propuesta o corrección…"></textarea>
+  </label>
+  <div class="flex flex-wrap items-center gap-4">
+    <button type="submit" class="focus-ring min-h-11 cursor-pointer rounded-md bg-clay-500 px-6 py-2 text-sm font-black text-basalt-950 transition hover:bg-clay-600 disabled:cursor-wait disabled:opacity-60">Enviar mensaje</button>
+    <p class="text-sm opacity-75" data-contact-status role="status" aria-live="polite"></p>
+  </div>
+  <p class="hidden rounded-xl bg-clay-500/15 p-3 text-sm font-bold" data-pending-messages></p>
+</form>
+
+<script>
+  import { flushContactQueue, getPendingContactCount, queueContact, sendContact, type ContactMessage } from '@/scripts/contactQueue';
+
+  async function showPendingCount(form: HTMLFormElement) {
+    const element = form.querySelector<HTMLElement>('[data-pending-messages]');
+    if (!element) return;
+    const count = await getPendingContactCount();
+    element.textContent = `${count} ${count === 1 ? 'mensaje pendiente' : 'mensajes pendientes'}`;
+    element.classList.toggle('hidden', count === 0);
+  }
+
+  function initializeContactForms() {
+    document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
+      if (form.dataset.queueReady === 'true') return;
+      form.dataset.queueReady = 'true';
+      const status = form.querySelector<HTMLElement>('[data-contact-status]');
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        button?.setAttribute('disabled', '');
+        if (status) status.textContent = navigator.onLine ? 'Enviando…' : 'Guardando en este dispositivo…';
+        const data = new FormData(form);
+        const message: ContactMessage = {
+          id: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+          name: String(data.get('name') ?? ''),
+          email: String(data.get('email') ?? ''),
+          message: String(data.get('message') ?? ''),
+          createdAt: new Date().toISOString(),
+          attempts: 0,
+        };
+        try {
+          if (!navigator.onLine) throw new Error('offline');
+          await sendContact(message);
+          form.reset();
+          if (status) status.textContent = 'Mensaje enviado. Gracias por aportar.';
+        } catch {
+          await queueContact(message);
+          form.reset();
+          if (status) status.textContent = 'Sin conexión: mensaje guardado para enviarlo después.';
+        } finally {
+          button?.removeAttribute('disabled');
+          await showPendingCount(form);
+        }
+      });
+
+      void flushContactQueue().then(() => showPendingCount(form)).catch(() => undefined);
+    });
+  }
+
+  initializeContactForms();
+  document.addEventListener('astro:page-load', initializeContactForms);
+  window.addEventListener('colorados:contact-queue', () => {
+    document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => void showPendingCount(form));
+  });
+</script>

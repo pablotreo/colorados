@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import SectorCard from '@/components/SectorCard.astro';
+import TopoCard from '@/components/TopoCard.astro';
+
+const sectors = (await getCollection('sectors')).sort((a, b) => a.data.order - b.data.order);
+const routes = await getCollection('routes');
+const generalTopos = (await getCollection('topos'))
+  .filter((topo) => !topo.data.sector && topo.data.sectors.length > 0)
+  .sort((a, b) => a.data.order - b.data.order);
+const sectorCount = new Set(sectors.map((sector) => sector.data.number)).size;
+const routeCounts = routes.reduce<Record<string, number>>((counts, route) => {
+  counts[route.data.sector] = (counts[route.data.sector] ?? 0) + 1;
+  return counts;
+}, {});
+---
+<BaseLayout title="Sectores" description="Sectores de escalada deportiva de Los Colorados, Barreal, San Juan.">
+  <section class="bg-basalt-900 pb-16 pt-32 text-white">
+    <div class="container-guide">
+      <Breadcrumbs items={[{ label: 'Sectores' }]} />
+      <p class="eyebrow mt-14 text-clay-500">{sectorCount} sectores numerados · {sectors.length} fichas</p>
+      <h1 class="display mt-3 text-6xl md:text-8xl">Sectores</h1>
+      <p class="mt-5 max-w-2xl text-lg text-white/60">Siete sectores cercanos entre sí. Roca volcánica, aproximaciones cortas y vías para distintas experiencias.</p>
+    </div>
+  </section>
+
+  {generalTopos.length > 0 && (
+    <section class="container-guide pt-16" aria-labelledby="croquis-generales">
+      <div class="mb-7">
+        <p class="eyebrow text-clay-500">Vista de conjunto</p>
+        <h2 id="croquis-generales" class="mt-2 text-4xl font-black tracking-tight md:text-5xl">Croquis generales</h2>
+        <p class="mt-4 max-w-2xl leading-7 opacity-65">Usá estas panorámicas para reconocer la numeración y ubicación general de los sectores.</p>
+      </div>
+      <div class="grid gap-5 md:grid-cols-2">
+        {generalTopos.map((topo) => <TopoCard topo={topo} sectorName="Colorados · Ubicación general" />)}
+      </div>
+    </section>
+  )}
+
+  <section class="container-guide py-16" aria-labelledby="directorio-sectores">
+    <div class="mb-7">
+      <p class="eyebrow text-clay-500">Roca volcánica de Barreal</p>
+      <h2 id="directorio-sectores" class="mt-2 text-4xl font-black tracking-tight md:text-5xl">Fichas de sectores</h2>
+    </div>
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {sectors.map((sector) => <SectorCard sector={sector} routeCount={routeCounts[sector.id] ?? 0} />)}
+    </div>
+  </section>
+</BaseLayout>

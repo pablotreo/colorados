@@ -1,0 +1,60 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content'; import BaseLayout from '@/layouts/BaseLayout.astro'; import Breadcrumbs from '@/components/Breadcrumbs.astro';
+interface Props { route: CollectionEntry<'routes'> }
+export async function getStaticPaths(){return (await getCollection('routes')).map(route => ({ params: { id: route.id }, props: { route } }))}
+const {route}=Astro.props; const {Content,headings}=await render(route); const sector=(await getCollection('sectors')).find(s=>s.id===route.data.sector);
+const schema={'@context':'https://schema.org','@type':'SportsActivityLocation',name:route.data.name,description:route.data.description,sport:'Rock climbing',containedInPlace:{'@type':'Place',name:sector?.data.name??'Los Colorados'}};
+const grade = route.data.grade ?? '¿?';
+---
+<BaseLayout title={route.data.name} description={route.data.description} schema={schema}>
+  <section class="bg-basalt-900 pb-14 pt-32 text-white">
+    <div class="container-guide">
+      <Breadcrumbs items={[{label:'Vías',href:'/vias/'},{label:route.data.name}]}/>
+      <div class="mt-14 flex flex-wrap items-end justify-between gap-8">
+        <div>
+          <p class="eyebrow text-clay-500">{route.data.order ? `Vía ${route.data.order} · ` : ''}{sector ? `Sector ${sector.data.number} · ${sector.data.name}` : route.data.sector} · Escalada deportiva</p>
+          <h1 class="display mt-3 text-6xl md:text-8xl">{route.data.name}</h1>
+          <p class="mt-5 max-w-2xl text-lg text-white/65">{route.data.description}</p>
+        </div>
+        <div class="rounded-2xl bg-white p-5 text-center text-basalt-900">
+          <span class="text-5xl font-black">{grade}</span>
+          <span class="block text-xs font-bold uppercase tracking-widest">grado informado</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="container-guide grid gap-12 py-14 lg:grid-cols-[15rem_1fr_18rem]">
+    <aside class="hidden lg:block">
+      <p class="eyebrow opacity-50">En esta ficha</p>
+      <nav class="mt-4 grid gap-3 text-sm">{headings.filter(h=>h.depth===2).map(h=><a href={`#${h.slug}`}>{h.text}</a>)}</nav>
+    </aside>
+    <article class="prose-guide min-w-0">
+      <div class="mb-8 rounded-xl border border-clay-600 bg-clay-500/15 p-4 text-sm"><strong>{route.data.verified?'Ficha verificada':'Datos aportados por la comunidad'}</strong><p class="mt-1 opacity-70">Revisá roca, anclajes y condiciones en el lugar antes de escalar.</p></div>
+      {route.data.restriction && <div class="mb-8 rounded-xl border border-clay-600 bg-clay-500/15 p-4 text-sm font-bold">{route.data.restriction}</div>}
+      {route.data.warning && <div class="mb-8 rounded-xl border border-clay-600 bg-clay-500/15 p-4 text-sm font-bold">{route.data.warning}</div>}
+      <section>
+        <h2>Información aportada</h2>
+        <p class="whitespace-pre-wrap rounded-xl border border-current/10 p-4 font-medium">{route.data.sourceText}</p>
+      </section>
+      <Content/>
+    </article>
+    <aside class="card h-fit p-6 lg:sticky lg:top-5">
+      <p class="eyebrow opacity-50">Ficha técnica</p>
+      <dl class="mt-5 grid gap-4 text-sm">
+        {route.data.order && <div class="flex justify-between gap-4"><dt>Número</dt><dd class="text-right font-bold">Vía {route.data.order}</dd></div>}
+        {route.data.status && <div class="flex justify-between gap-4"><dt>Estado</dt><dd class="text-right font-bold">{route.data.status}</dd></div>}
+        <div class="flex justify-between gap-4"><dt>Clasificación</dt><dd class="text-right font-bold">{route.data.classification}</dd></div>
+        <div class="flex justify-between gap-4"><dt>Largos</dt><dd class="text-right font-bold">{route.data.pitches ? `${route.data.pitches}${route.data.pitchesApproximate ? '?' : ''}` : 'Por confirmar'}</dd></div>
+        <div class="flex justify-between gap-4"><dt>Longitud</dt><dd class="text-right font-bold">{route.data.length ? `${route.data.length} m${route.data.lengthApproximate ? '?' : ''}` : 'Por confirmar'}</dd></div>
+        {route.data.protection && <div class="flex justify-between gap-4"><dt>Protección</dt><dd class="text-right font-bold">{route.data.protection}</dd></div>}
+        {route.data.firstAscent && <div class="flex justify-between gap-4"><dt>Primera ascensión</dt><dd class="text-right font-bold">{route.data.firstAscent}</dd></div>}
+        {route.data.history && <div class="flex justify-between gap-4"><dt>Historia</dt><dd class="text-right font-bold">{route.data.history}</dd></div>}
+      </dl>
+      {route.data.equipment.length > 0 && <div class="mt-6 border-t border-current/10 pt-5">
+        <p class="text-xs font-black uppercase tracking-widest">Material sugerido</p>
+        <ul class="mt-3 grid gap-2 text-sm opacity-70">{route.data.equipment.map(e=><li>· {e}</li>)}</ul>
+      </div>}
+      <a href={`/sectores/${route.data.sector}/`} class="mt-6 block text-sm font-black underline underline-offset-4">Ver sector →</a>
+    </aside>
+  </div>
+</BaseLayout>

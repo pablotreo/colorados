@@ -1,0 +1,14 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Button from '@/components/starwind/Button.astro';
+---
+<BaseLayout title="Mensaje enviado" description="Gracias por colaborar con la guía de Colorados.">
+  <section class="container-guide flex min-h-[75svh] items-center pt-24">
+    <div class="max-w-xl">
+      <p class="eyebrow text-clay-500">Mensaje recibido</p>
+      <h1 class="display mt-3 text-6xl">Gracias por aportar.</h1>
+      <p class="mt-6 text-lg leading-8 opacity-65">Tu información nos ayuda a mantener la guía más útil y segura para todos.</p>
+      <Button href="/" class="mt-8">Volver al inicio</Button>
+    </div>
+  </section>
+</BaseLayout>

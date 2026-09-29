@@ -1,0 +1,30 @@
+---
+import '@/styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import PwaUpdatePrompt from '@/components/PwaUpdatePrompt.astro';
+import { siteConfig } from '../../site.config.mjs';
+interface Props { title: string; description: string; type?: string; schema?: Record<string, unknown> }
+const { title, description, type='website', schema } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const fullTitle = title === 'Los Colorados' ? siteConfig.fullName : `${title} — ${siteConfig.shortName}`;
+const defaultSchema = { '@context':'https://schema.org', '@type':'WebSite', name:siteConfig.fullName, url:Astro.site?.toString(), description, inLanguage:siteConfig.locale };
+---
+<!doctype html><html lang="es-AR"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="theme-color" content={siteConfig.theme.color}>
+  <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content={siteConfig.shortName}>
+  <title>{fullTitle}</title><meta name="description" content={description}><link rel="canonical" href={canonical}>
+  <meta property="og:type" content={type}><meta property="og:title" content={fullTitle}><meta property="og:description" content={description}><meta property="og:url" content={canonical}><meta property="og:site_name" content={siteConfig.fullName}><meta property="og:locale" content="es_AR"><meta property="og:image" content={new URL('/media/fotos/colorados-hero-generated.png', Astro.site)}>
+  <link rel="icon" href="/icons/icon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png"><link rel="manifest" href="/manifest.webmanifest">
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema ?? defaultSchema)} />
+  <ClientRouter />
+</head><body><a href="#contenido" class="focus-ring fixed left-3 top-3 z-50 -translate-y-20 rounded bg-white p-3 text-black focus:translate-y-0">Saltar al contenido</a><Header /><main id="contenido"><slot /></main><Footer /><PwaUpdatePrompt />
+  <script>
+    import { flushContactQueue } from '@/scripts/contactQueue';
+    const flushPendingContacts = () => void flushContactQueue().catch(() => undefined);
+    window.addEventListener('online', flushPendingContacts);
+    document.addEventListener('astro:page-load', flushPendingContacts);
+    flushPendingContacts();
+  </script>
+</body></html>
