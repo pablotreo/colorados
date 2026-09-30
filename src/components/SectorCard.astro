@@ -1,9 +1,9 @@
 ---
 import Badge from './starwind/Badge.astro';
-const { sector, routeCount = 0 } = Astro.props;
+const { sector, routeCount = 0, clampDescription = false } = Astro.props;
 const routesLabel = routeCount > 0 ? `${routeCount} ${routeCount === 1 ? 'vía' : 'vías'}` : 'Vías por documentar';
 ---
 <a href={`/sectores/${sector.id}/`} class="card focus-ring group flex min-h-72 flex-col gap-8 overflow-hidden p-6 transition hover:-translate-y-1 hover:shadow-xl">
   <div class="flex min-h-10 items-start justify-between gap-4"><div class="flex flex-wrap items-center gap-2"><span class="inline-flex items-center rounded-md bg-clay-500 px-3 py-1.5 font-extrabold uppercase tracking-wide text-basalt-950" style="font-size:1rem">Sector {sector.data.number}</span><Badge>{routesLabel}</Badge>{sector.data.orientation && <Badge>{sector.data.orientation}</Badge>}</div><span class="font-black text-clay-500">↗</span></div>
-  <div><h3 class="text-3xl font-black tracking-[-.045em] [overflow-wrap:anywhere] sm:[overflow-wrap:normal]">{sector.data.name}</h3><p class="mt-3 text-sm leading-6 opacity-65">{sector.data.description ?? 'Información del sector en proceso de documentación.'}</p>{sector.data.approach && <div class="mt-5 border-t border-current/10 pt-4 text-sm font-bold"><span>Acceso: {sector.data.approach}</span></div>}</div>
+  <div><h3 class="text-3xl font-black tracking-[-.045em] [overflow-wrap:anywhere] sm:[overflow-wrap:normal]">{sector.data.name}</h3><p class:list={["mt-3 text-sm leading-6 opacity-65", { "line-clamp-4": clampDescription }]}>{sector.data.description ?? 'Información del sector en proceso de documentación.'}</p>{sector.data.approach && <div class="mt-5 border-t border-current/10 pt-4 text-sm font-bold"><span>Acceso: {sector.data.approach}</span></div>}</div>
 </a>
