@@ -20,6 +20,9 @@ for block in re.split(r'(?=SECTOR \d+:)',text)[1:]:
   d=dict(name=rname,sector=id,order=n,sourceOrder=seq,classification='DEPORTIVA',description=f'Vía de escalada deportiva en {name}.',sourceText=line,source=data['source'],verified=False)
   if number==2 and n==1:d['sourceText'] += ' Variante final x la dere (??), GF-2015.'
   if grade:d['grade']=grade;d['gradeUncertain']='?' in grade
+  if id == 'la-visera' and rname == 'Teniente coronel':
+   d['grade']='7b'
+   d['sourceText']=line.replace('(6c)', '(7b)')
   bolts=re.match(r'(\d+)\+(\d+)',tail)
   if bolts:d['bolts']=int(bolts[1]);d['anchorPoints']=int(bolts[2]);d['protection']=bolts[0]+' (notación de la fuente)'
   if 'construcción' in rname.lower() or 'falta la entrada' in line:d['status']='Inconclusa'

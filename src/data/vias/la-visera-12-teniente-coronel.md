@@ -5,10 +5,10 @@ order: 12
 sourceOrder: 11
 classification: "DEPORTIVA"
 description: "Vía de escalada deportiva en La Visera."
-sourceText: "12. Teniente coronel (6c) 9+2 FG-FD 2024 (falta la entrada y limpieza)"
+sourceText: "12. Teniente coronel (7b) 9+2 FG-FD 2024 (falta la entrada y limpieza)"
 source: "https://docs.google.com/document/d/1Jeyi0XtoBjCj5vTKd7hTQVcWXJPbBDPS/edit"
 verified: false
-grade: "6c"
+grade: "7b"
 gradeUncertain: false
 bolts: 9
 anchorPoints: 2
