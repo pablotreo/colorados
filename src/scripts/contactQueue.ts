@@ -3,6 +3,7 @@ export interface ContactMessage {
   name: string;
   email: string;
   message: string;
+  botField: string;
   createdAt: string;
   attempts: number;
 }
@@ -70,6 +71,7 @@ export async function sendContact(message: ContactMessage): Promise<void> {
     name: message.name,
     email: message.email,
     message: message.message,
+    'bot-field': message.botField ?? '',
   });
   const response = await fetch('/', {
     method: 'POST',

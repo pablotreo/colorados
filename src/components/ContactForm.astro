@@ -12,14 +12,14 @@ const { compact = false } = Astro.props;
   </p>
   <div class:list={["grid gap-6", compact ? "md:grid-cols-2" : "sm:grid-cols-2"]}>
     <label class="grid gap-2 text-sm font-bold">Nombre y apellido
-      <input required autocomplete="name" name="name" class="focus-ring h-12 rounded-xl border border-current/20 bg-transparent px-4 font-normal" />
+      <input required maxlength="100" autocomplete="name" name="name" class="focus-ring h-12 rounded-xl border border-current/20 bg-transparent px-4 font-normal" />
     </label>
     <label class="grid gap-2 text-sm font-bold">Correo electrónico
-      <input required autocomplete="email" name="email" type="email" class="focus-ring h-12 rounded-xl border border-current/20 bg-transparent px-4 font-normal" />
+      <input required maxlength="254" autocomplete="email" name="email" type="email" class="focus-ring h-12 rounded-xl border border-current/20 bg-transparent px-4 font-normal" />
     </label>
   </div>
   <label class="grid gap-2 text-sm font-bold">Mensaje
-    <textarea required name="message" rows={compact ? 5 : 7} class="focus-ring resize-y rounded-xl border border-current/20 bg-transparent p-4 font-normal" placeholder="Cuéntanos tu aporte, propuesta o corrección…"></textarea>
+    <textarea required maxlength="5000" name="message" rows={compact ? 5 : 7} class="focus-ring resize-y rounded-xl border border-current/20 bg-transparent p-4 font-normal" placeholder="Cuéntanos tu aporte, propuesta o corrección…"></textarea>
   </label>
   <div class="flex flex-wrap items-center gap-4">
     <button type="submit" class="focus-ring min-h-11 cursor-pointer rounded-md bg-clay-500 px-6 py-2 text-sm font-black text-basalt-950 transition hover:bg-clay-600 disabled:cursor-wait disabled:opacity-60">Enviar mensaje</button>
@@ -57,6 +57,7 @@ const { compact = false } = Astro.props;
           name: String(data.get('name') ?? ''),
           email: String(data.get('email') ?? ''),
           message: String(data.get('message') ?? ''),
+          botField: String(data.get('bot-field') ?? ''),
           createdAt: new Date().toISOString(),
           attempts: 0,
         };
