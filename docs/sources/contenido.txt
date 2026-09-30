@@ -11,7 +11,7 @@ SECTOR 1: BUENA VISTA
 Cantidad de vías: 10
 Descripción: sector no muy visitado aunque la variedad y estilo de las vías, en su mayoría bloqueras y bien verticales, hacen que valga la pena, sobre todo en las siestas de invierno, o bien en media estación o  verano aunque sólo de mañana por la intensidad del Sol del oeste.
 1. Kill Bill ayer (6b+) 5+2, GF-AB-AM 2015
-2. Por qué mamarse hoy (6b+) 4+2, AM-2015
+2. Por qué mamarse hoy (6c) 4+2, AM-2015
 3. Ignifuga (7b) 5+3, GF-2015
 4. Mequetrefe (7a) 6+2, GF-2015
 5. Supermansito (6c) 5+2, GF-2015
@@ -19,7 +19,7 @@ Descripción: sector no muy visitado aunque la variedad y estilo de las vías, e
 7. Los dadoscuenta (6b) 5+2, AM-2015
 8. Mandinga (6b+) 4+2, AM-2015
 9. Tutumba (6b) 3+2, AM-2015
-10. Galletita Serviclú (5+) 3+2, AM-2015
+10. Galletita Serviclú (6a) 4+2, AM-2015
 
 
 SECTOR 2: LA VISERA
@@ -33,9 +33,9 @@ Descripción: increíble sector con vías de mucha proyección en la vertical. V
 6. Esta madura (7b+) 13+2 GF-CM-IC-2009-FD-2025
 7. El Sopla vías (7a) 10+2, GF-CM-IC-2009
 8. Egragophilas (7b) 10+2, GF-CM-IC-2009 - por variante 9 (7b+) FD2023
-9. The Pistol Face (7c) 10+2, GF-2009-FD2023-FD-2025
-10. Espolón de los halcones (7c?) 10+2, FD-2026
-10. Teniente coronel (6c) 9+2 FG-FD 2024 (falta la entrada y limpieza)
+10. The Pistol Face (7c) 10+2, GF-2009-FD2023-FD-2025
+11. Espolón de los halcones (7c?) 10+2, FD-2026
+12. Teniente coronel (6c) 9+2 FG-FD 2024 (falta la entrada y limpieza)
 
 
 SECTOR 3: MORRO DEL ALERO
@@ -48,15 +48,15 @@ Descripción: si bien la calidad de la roca en este sector no es la óptima, sus
 3. Seres volátiles (6b+) 6+2, FD-LP-2025
 4. Orgía de uno (6b+) 6+2, AM-2016
 5. Defensa Flipper (6b) 6+2, AM-2016 Atención con Bloque!!!
-6. Variante (6b+) 5+2, FD-2024
+6. Variante boba (6b+) 5+2, FD-2024
 7. A lo bobo (6a) 5+2, AM-2016
 8. Cabeza de topo (6a) 3+2, FD LP 2025
 9. Chacha coma (7a) 4+2, AM-2015
 10. 50 bancaria (6c) 4+2, AB-2016
 11. La vuelta en quasca (6a+) 4+2, AM-2015 
 12. Travesía bancaria (6c+) 6+2, FD-2024
-13. Cuchillo Gillette (4) 3+2, AM-2016
-14. Cachivache (4) 3+2, EC-2019
+13. Cuchillo Gillette (5) 3+2, AM-2016
+14. Cachivache (5+) 3+2, EC-2019
 15. En construcción (5?)  
 
 
@@ -72,7 +72,7 @@ Descripción: un sector clásico de Los Colorados por su diversidad y calidad de
 7. Tumberías (7b) 6+2, FD – 2026 Ingresando por vía 6 (7a+)
 8. Derecho de Admisión (7c) 5+2, FD - 2024
 9. Licencia para escalar (7b) 4+2, FD-LP 2024
-10. Donde topeta que no centra (7a) 7+2, AM- 2015
+10. Donde topeta que no de dentra (7a) 7+2, AM- 2015
 11. Vos estas adentro tuyo (6b) 4+2, AM - 2015
 12. Te hicieron el pompón (6b+) 5+2, AK-PB-JM-2016 -FD - 2025
 13. Espíritu de lucha (7b) 5+2, AM – 2016- FD-LP 2025

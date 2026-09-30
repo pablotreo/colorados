@@ -1,19 +1,17 @@
 ---
-name: "Teniente coronel"
+name: "The Pistol Face"
 sector: "la-visera"
 order: 10
-sourceOrder: 11
+sourceOrder: 9
 classification: "DEPORTIVA"
 description: "Vía de escalada deportiva en La Visera."
-sourceText: "10. Teniente coronel (6c) 9+2 FG-FD 2024 (falta la entrada y limpieza)"
+sourceText: "10. The Pistol Face (7c) 10+2, GF-2009-FD2023-FD-2025"
 source: "https://docs.google.com/document/d/1Jeyi0XtoBjCj5vTKd7hTQVcWXJPbBDPS/edit"
 verified: false
-grade: "6c"
+grade: "7c"
 gradeUncertain: false
-bolts: 9
+bolts: 10
 anchorPoints: 2
-protection: "9+2"
-status: "Inconclusa"
-warning: "Falta la entrada y limpieza, según la fuente."
+protection: "10+2"
 restriction: "No escalar de septiembre a diciembre: nidificación de halcones peregrinos."
 ---
