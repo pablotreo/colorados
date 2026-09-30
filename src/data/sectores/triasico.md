@@ -6,6 +6,5 @@ description: "sector muy reciente con roca que aún necesita limpieza y  pasada 
 declaredRoutes: 5
 source: "https://docs.google.com/document/d/1Jeyi0XtoBjCj5vTKd7hTQVcWXJPbBDPS/edit"
 approach: "Menos de 10 minutos desde el cementerio Cerro Colorado"
-warning: "Roca que aún necesita limpieza, según la fuente."
+warning: "Roca que aún necesita limpieza, según la fuente. Las vías en naranja son proyectadas."
 ---
-
