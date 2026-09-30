@@ -9,7 +9,7 @@ sectors=[]; routes=[]
 for block in re.split(r'(?=SECTOR \d+:)',text)[1:]:
  lines=[s.strip() for s in block.splitlines() if s.strip()];m=re.match(r'SECTOR (\d+): (.+)',lines[0]);number=int(m[1]);name=m[2].title();id=slug(name);sectors.append(id)
  description=next(s.removeprefix('Descripción: ') for s in lines if s.startswith('Descripción:'))
- data=dict(name=name,number=number,order=number,description=description,declaredRoutes=int(re.search(r'Cantidad de vías: (\d+)',block)[1]),source='https://docs.google.com/document/d/1Jeyi0XtoBjCj5vTKd7hTQVcWXJPbBDPS/edit',approach='Menos de 10 minutos desde el cementerio Cerro Colorado')
+ data=dict(name=name,number=number,order=number,description=description,declaredRoutes=int(re.search(r'Cantidad de vías: (\d+)',block)[1]),source='https://docs.google.com/document/d/1Jeyi0XtoBjCj5vTKd7hTQVcWXJPbBDPS/edit')
  if number==2:data['restriction']='No escalar de septiembre a diciembre: nidificación de halcones peregrinos.'
  if number==7:data['warning']='Roca que aún necesita limpieza, según la fuente.'
  write('sectores',id,data)
