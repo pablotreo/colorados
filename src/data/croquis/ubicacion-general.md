@@ -2,7 +2,7 @@
 name: "Ubicación general"
 sectors: ["buena-vista", "la-visera", "morro-del-alero", "buzon-de-sugerencias", "sabandijeada", "ojo-clinico", "triasico"]
 type: "ubicacion"
-image: "/media/croquis/croquis-ubicacion-los-colorados-dibujo.jpg"
+image: "/media/croquis/croquis-general.png"
 alt: "Croquis de ubicación general de Los Colorados"
 caption: "Referencia general de los sectores. Confirmá el acceso localmente."
 order: 1
