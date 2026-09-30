@@ -7,5 +7,4 @@ declaredRoutes: 10
 source: "https://docs.google.com/document/d/1Jeyi0XtoBjCj5vTKd7hTQVcWXJPbBDPS/edit"
 approach: "Menos de 10 minutos desde el cementerio Cerro Colorado"
 restriction: "No escalar de septiembre a diciembre: nidificación de halcones peregrinos."
-countNote: "La fuente declara 10 vías. “Variante final x la dere” se registra como variante de la vía 1, no como vía independiente. Las dos entradas numeradas 10 se conservan."
 ---
