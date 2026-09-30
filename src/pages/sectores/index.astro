@@ -4,6 +4,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import SectorCard from '@/components/SectorCard.astro';
 import TopoCard from '@/components/TopoCard.astro';
+import Map from '@/components/Map.astro';
 
 const sectors = (await getCollection('sectors')).sort((a, b) => a.data.order - b.data.order);
 const routes = await getCollection('routes');
@@ -47,5 +48,9 @@ const routeCounts = routes.reduce<Record<string, number>>((counts, route) => {
     <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {sectors.map((sector) => <SectorCard sector={sector} routeCount={routeCounts[sector.id] ?? 0} />)}
     </div>
+  </section>
+
+  <section class="container-guide pb-16">
+    <Map />
   </section>
 </BaseLayout>
